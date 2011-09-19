@@ -73,5 +73,29 @@ TH("attribute deletion 2", {
   deleteH5Attribute(g1, "jim")
 })
 
+gt <- createH5Group(h5, "grp-type")
+
+TH("dataset type create 1", {
+  d <- createH5Dataset(gt, "d-type-1", matrix(rnorm(200, 100, sd = 10), ncol = 10), dType = "integer",
+                       chunk = c(10, 10))
+  dd <- getH5Dataset(gt, "d-type-1")
+  all(dim(dd) == c(20, 10)) && storage.mode(dd[]) == 'integer'
+})
+
+TH("dataset type create 2", {
+  d <- createH5Dataset(gt, "d-type-2", rnorm(200, 100, sd = 10), dType = "integer",
+                       dim = c(10, 20), chunk = c(10, 10))
+  dd <- getH5Dataset(gt, "d-type-2")
+  all(dim(dd) == c(10, 20)) && storage.mode(dd[]) == 'integer'
+})
+
+TH("dataset type 3", {
+  d <- createH5Dataset(gt, "d-type-3", rnorm(200, 100, sd = 10), dType = "character",
+                       dim = c(10, 20), chunk = c(10, 10))
+  dd <- getH5Dataset(gt, "d-type-3")
+  all(dim(dd) == c(10, 20)) && storage.mode(dd[]) == 'character'
+})
+
 TH(action = 'print')
+TH(action = 'throw')
 

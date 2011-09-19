@@ -1,14 +1,22 @@
 require(h5r)
 
-##
-## The tests.
-##
+source('tinyTestHarness.R')
+TH <- TestHarness()
+
 file <- system.file("h5_files", "ex_1.h5", package = 'h5r')
 f <- H5File(file)
 
-gc()
-v <- replicate(1000, {
-  getH5Group(f, "group_1")
+TH('get group', {
+  ## Not quite sure how to really do this right, I don't expect the
+  ## memory to always go back to the original state.
+  g = gc()
+  v <- replicate(1000, {
+    getH5Group(f, "group_1")
+  })
+  rm(v)
+  gc()
+  TRUE
 })
-rm(v)
-lapply(1:5, function(i) gc())
+
+TH(action = 'print')
+TH(action = 'throw')

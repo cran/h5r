@@ -1,24 +1,41 @@
 require(h5r)
 
-h5 <- H5File("test.h5", 'w')
+source("tinyTestHarness.R")
 
-createH5Attribute(h5, "e", 10:1)
-createH5Attribute(h5, "d", c("jome?", "jeosfmdlmf", "s"))
+TH <- TestHarness()
+h5 <- H5File("test-read-points.h5", 'w')
 
-d <- createH5Dataset(h5, "jim", cbind(c('jime ', 'joe', 'mikey'),
-                                      c('jime 2 ', 'joe 2', 'mikey 2')))
-d[]
+TH('create h5 attribute', {
+  createH5Attribute(h5, "e", 10:1)
+  all(getH5Attribute(h5, "e")[] == 10:1)
+})
 
-writeH5Data(d, c("johnson", "jodhsd"), c(1,0), c(2, 1))
+TH('create h5 attribute 2', {
+  strings <- c("ACGTACGT", "GGGGGGGGGGGGGGGG", "CCGCGCGCG")
+  createH5Attribute(h5, "d", strings)
+  all(getH5Attribute(h5, "d")[] == strings)
+})
 
-m <- createH5Dataset(h5, "mm", cbind(rnorm(1000), rnorm(1000)))
-m[1:10, 2]
-                
+indta <- cbind(c(' xx ', '$$$$$$$$$$$', '||||'),
+               c(' jjjj', '"$"', '"""""""'))
 
-d1 <- createH5Dataset(h5, "jon", runif(100000))
-p <- readPoints(d1, ss <- sample(1:length(d1), size = 1000, replace = T))
-all(p == d1[ss])
+TH('create dataset', {
+  d <- createH5Dataset(h5, "d1", indta)
+  all(d[] == indta)
+})
 
+TH('write data', {
+  ndta <- cbind("yyy", "xxx")
+  writeH5Data(d, ndta, c(1,1), dim(ndta))
+  indta[1,] <- ndta
+  all(getH5Dataset(h5, "d1")[] == indta)
+})
 
-d2 <- createH5Dataset(h5, "jodf", paste(runif(200010)))
-d2[sample(1:length(d2), size = 1000)]
+TH('read points', {
+  d1 <- createH5Dataset(h5, "d3", runif(100000))
+  p <- readPoints(d1, ss <- sample(1:length(d1), size = 1000, replace = T))
+  all(p == d1[ss])
+})
+
+TH(action = 'print')
+TH(action = 'throw')

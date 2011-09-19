@@ -4,7 +4,6 @@
 #include <hdf5.h>
 #include <Rinternals.h>    
 #include <R.h>
-#include <malloc.h>
 
 #define DEBUG 0
 #define MEMORYDEBUG 0
@@ -18,14 +17,6 @@ typedef struct h5_holder {
     int is_file;
     hid_t id;
 } h5_holder;
-
-SEXP h5R_malloc_trim() {
-#ifdef __GLIBC__
-    return ScalarInteger(malloc_trim(0));
-#else
-    return ScalarInteger(-1);
-#endif
-}
 
 void h5R_finalizer(SEXP h5_obj) {
     h5_holder* h = (h5_holder*) R_ExternalPtrAddr(h5_obj);
@@ -59,9 +50,6 @@ void h5R_finalizer(SEXP h5_obj) {
     
     // This call is seemingly a noop.
     H5garbage_collect();
-
-    // Not sure if calling this here will be sufficient. 
-    h5R_malloc_trim();
 }
 
 SEXP _h5R_make_holder (hid_t id, int is_file) {

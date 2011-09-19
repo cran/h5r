@@ -27,13 +27,16 @@ gcl <- function() { lapply(1:10, gc, verbose = F)[[10]] }
 
 gc()
 
+## 7/2/2013 - malloc_trim commented out for CRAN submission.
+
+
 showPS()
 m <- .Call("h5R_allocate_gig")
 b <- 'bar' # from the post, "blocking the memory"
 rm(m)
 gcl()
 showPS()
-h5r:::.mallocTrim()
+# h5r:::.mallocTrim()
 showPS()
 
 m <- sapply(1:1000, function(a) {
@@ -43,7 +46,7 @@ b <- 'bar' # from the post, "blocking the memory"
 rm(m)
 gcl()
 showPS()
-h5r:::.mallocTrim()
+# h5r:::.mallocTrim()
 showPS()
 
 m <- sapply(1:100000, function(a) {
@@ -53,7 +56,7 @@ b <- 'bar' # from the post, "blocking the memory"
 rm(m)
 gcl()
 showPS()
-h5r:::.mallocTrim()
+# h5r:::.mallocTrim()
 showPS()
 
 m <- sapply(1:1000000, function(a) {
@@ -63,5 +66,5 @@ b <- 'bar' # from the post, "blocking the memory"
 rm(m)
 gcl()
 showPS()
-h5r:::.mallocTrim()
+# h5r:::.mallocTrim()
 showPS()

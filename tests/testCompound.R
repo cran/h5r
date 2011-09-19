@@ -21,4 +21,6 @@ for (dset in dsets) {
      all(as.data.frame(d[1:10]) == as.data.frame(d[10:1])[10:1,]))
 }
 
+TH(action = 'print')
+TH(action = 'throw')
 
