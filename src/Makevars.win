@@ -1,2 +1,2 @@
-PKG_CPPFLAGS = -I$(HDF5)/include -D_HDF5USEDLL_
-PKG_LIBS = -L$(HDF5) -lhdf5
+PKG_CFLAGS = -I$(LIB_HDF5)$(R_ARCH)/include -DWINDOWS
+PKG_LIBS = -lm -L$(LIB_HDF5)$(R_ARCH)/lib -lhdf5 -lsz -lz

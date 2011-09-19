@@ -1,10 +1,19 @@
 INSTALLATION INSTRUCTIONS FOR THE h5r R PACKAGE
 
-Currently, this package works and has been tested with hdf5-1.8.4 on
-Mac OSX and Linux. The package will most likely work on most POSIX
-systems where R works. Windows support should be forthcoming and
-anyone who has experience there and would like to help please contact
-me: jbullard@pacificbiosciences.com. 
+Currently, this package works and has been tested with >= hdf5-1.8.4
+(we build with 1.8.8) on Mac OSX, Linux, and Windows. The package will
+most likely work on most POSIX systems where R (>= 2.10) works. 
+
+The hdf group (http://www.hdfgroup.org) provides binaries for common
+platforms. Unfortunately, the binaries they provide for Windows
+platforms are not compatible with R because they are based on
+Microsoft's compiler. Therefore, we provide MinGw-based static
+libraries to compile against. It is non-trivial to get a functioning
+MinGW-based Windows binary. These binaries are available in the source
+download at R-forge under the 'windows' directory.
+
+Unix
+----
 
 To install, a working hdf5 installation must exist. This can be
 downloaded at: http://www.hdfgroup.org/downloads/index.html#hdf5
@@ -22,5 +31,19 @@ your LD_LIBRARY_PATH environment variable to contain the directory:
 $HDF5_HOME/libs, otherwise, at run-time, there will be no means to
 find the hdf5.so. 
 
+WINDOWS
+-------
+
+The easiest way to get a working Windows version is to download the
+pre-built version from CRAN. However, if a user wants to build from
+scratch then they should directly download from the source repostitory
+at: https://r-forge.r-project.org/projects/h5r/
+
+That download will have pre-built static hdf5 libraries. One can then
+just build using 'R CMD INSTALL h5r' 
+
+
+HELP
+----
 Please contact jbullard@pacificbiosciences.com if you have any
 questions.

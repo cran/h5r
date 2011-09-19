@@ -1,11 +1,39 @@
         **************************************************
         *                                                *
+        *              1.4 SERIES NEWS                   *
+        *                                                *
+        **************************************************
+
+
+                CHANGES IN h5r VERSION 1.4
+
+NEW FEATURES
+    o Added real Windows support thanks to Mengjuei Hsieh
+    o Added support to read fixed length character strings
+    o Large cleanup of the C interface file
+
+
+        **************************************************
+        *                                                *
+        *              1.3 SERIES NEWS                   *
+        *                                                *
+        **************************************************
+
+
+                CHANGES IN h5r VERSION 1.3
+
+NEW FEATURES
+    o Added Windows support thanks to the rhdf5 package.
+   
+
+        **************************************************
+        *                                                *
         *              1.2 SERIES NEWS                   *
         *                                                *
         **************************************************
 
 
-                CHANGES IN h5r VERSION 1.1
+                CHANGES IN h5r VERSION 1.2
 
 NEW FEATURES
     o Added 'ls' function

@@ -1,3 +1,8 @@
+##
+## This file is a test/debug file for the correct implementation of
+## the '[' function. Mostly, it is a file to better understand the
+## semantics of argument handling with this function.
+##
 require(methods)
 
 VERBOSE <- TRUE

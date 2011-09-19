@@ -1,0 +1,4 @@
+#!/bin/sh
+rm -f src/h5_wrap.o src/h5_debug.o \
+      src/h5r.so src/h5r.dylib
+rm -rf src-*

@@ -85,7 +85,7 @@ ds4 <- getH5Dataset(g, "ds_4", inMemory = F)
 
 TH("ds_2 dim", all(dim(ds4[,]) == dim(ds4)) & all(dim(ds4M[,]) == dim(ds4)))
 
-TH("ds_4, memory", (function(n = 100, s = 100) {
+TH("ds_4, memory", (function(n = 10, s = 10) {
   g1 <- gc()[,1]
   a <- replicate(n, {
     replicate(s, getH5Dataset(g, "ds_4", inMemory = FALSE)[1:2,1:2])
@@ -168,18 +168,10 @@ ds7M <- getH5Dataset(g, "ds_7", inMemory = TRUE)
 
 TH("random slice", {
   set.seed(10)
-  system.time({a <- replicate(10000, randomSlice(ds7))})
+  system.time({a <- replicate(100, randomSlice(ds7))})
   set.seed(10)
-  system.time({b <- replicate(10000, randomSlice(ds7M))})
+  system.time({b <- replicate(100, randomSlice(ds7M))})
   all.equal(a,b)
-})
-
-TH("list attributes, file", {
-  length(listH5Contents(f)) == 15
-})
-
-TH("list attributes, group", {
-  length(listH5Contents(g)) == 12
 })
 
 ds8 <- getH5Dataset(g, "ds_8", inMemory = FALSE)
@@ -196,7 +188,7 @@ TH("hSlab grab",
    all(ds8[] == ds8[ hSlab(c(1,1), end = dim(ds8)) ]))
 
 TH("normal time", {
-  all(replicate(10000, {
+  all(replicate(100, {
     m <- apply(cbind(c(1,1,1), dim(ds7)), 1, function(b) {
       a <- runif(1, b[1], b[2])
       floor(c(a, runif(1, a, b[2])))
@@ -209,7 +201,7 @@ TH("normal time", {
 })
 
 TH("hSlab time", {
-  all(replicate(10000, {
+  all(replicate(100, {
     m <- apply(cbind(c(1,1,1), dim(ds7)), 1, function(b) {
       a <- runif(1, b[1], b[2])
       floor(c(a, runif(1, a, b[2])))
@@ -228,7 +220,31 @@ TH("slabs equal iteration", {
   all.equal(r1, r2)
 })
 
+##
+## Fixed-length string datasets.
+##
+ds10 <- getH5Dataset(g, "ds_10")
+TH("fixed string full read", all(ds10[] == c("rosalind", "james", "joseph", "michael", "rebecca")))
+TH("fixed string selection", all(ds10[2:4] == c("james", "joseph", "michael")))
+
+ds11 <- getH5Dataset(g, "ds_11")
+TH("fixed string dimension", all(dim(ds11) == c(2, 3)))
+TH("fixed string selection", all(ds11[,2] == c("bb", "eeeee")))
+
+
+##
+## File contents
+##
+TH("list attributes, file", {
+  length(listH5Contents(f)) == 17
+})
+
+TH("list attributes, group", {
+  length(listH5Contents(g)) == 14
+})
+
 
 TH(action = "print")
 TH(action = "throw")
+
 
