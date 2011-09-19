@@ -116,6 +116,14 @@ H5File <- function(fileName, mode = 'r') {
   return(! is.null(h5Dataset@.data))
 }
 
+.openObjects <- function(h5File) {
+  .myCall("h5R_get_object_count", .ePtr(h5File))
+}
+
+.mallocTrim <- function() {
+  .myCall("h5R_malloc_trim")
+}
+
 setMethod("getH5Group", c("H5Container", "character"), function(h5Obj, groupName) {
   if (is.null(x <- .myCall("h5R_get_group", .ePtr(h5Obj), groupName)))
     stop(paste("Group:", groupName, "cannot be opened."))
@@ -506,7 +514,9 @@ readSlab <- function(h5Dataset, offsets, dims) {
   if (! all((offsets + dims - 1) <= dim(h5Dataset)))
     stop("error invalid slice specification in readSlab.")
   d <- .myCall("h5R_read_dataset", .ePtr(h5Dataset), as.integer(offsets - 1), as.integer(dims))
-  dim(d) <- rev(dims)
+  
+  if (class(d) != 'list') ## compound datasets produce lists.
+    dim(d) <- rev(dims)
 
   if (! is.null(dim(h5Dataset))) aperm(d) else d
 }

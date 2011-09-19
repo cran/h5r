@@ -59,3 +59,45 @@ f.close()
 ## shrink the file for submission.
 os.system("h5repack -v -f GZIP=7 %s %s-repacked" % (FILE, FILE))
 os.system("mv %s-repacked %s" % (FILE, FILE))
+
+##
+## now make the compound file.
+##
+FILE = 'compound.h5' 
+
+if (os.path.exists(FILE)):
+    os.remove(FILE)
+
+f = h5py.File(FILE)
+
+## no strings
+r = recarray(shape = (100,), dtype = [('a',int), ('b', float)])
+for a in xrange(0, r.shape[0]):
+    r.a[a] = random.randint(10000)
+    r.b[a] = random.rand(1)[0]
+f.create_dataset('NS', data = r)
+
+## fixed len
+r = recarray(shape = (100,), dtype = [('a',int), ('b', float), ('c', 'S10')])
+for a in xrange(0, r.shape[0]):
+    r.a[a] = random.randint(10000)
+    r.b[a] = random.rand(1)[0]
+    sq = "".join([['a','c','g','t'][random.randint(4)] for x in 
+                  xrange(0, random.randint(9))]) + "|"
+    r.c[a] = sq
+f.create_dataset("S10", data = r)
+
+## vlen
+r = recarray(shape = (100,), dtype = [('a',int), ('b', float), ('c', h5py.new_vlen(str))])
+for a in xrange(0, r.shape[0]):
+    r.a[a] = random.randint(10000)
+    r.b[a] = random.rand(1)[0]
+    sq = "".join([['a','c','g','t'][random.randint(4)] for x in 
+                  xrange(0, random.randint(9))]) + "|"
+    r.c[a] = sq
+f.create_dataset("SVLEN", data = r)
+
+## close it up and shrink it. 
+f.close()
+os.system("h5repack -v -f GZIP=7 %s %s-repacked" % (FILE, FILE))
+os.system("mv %s-repacked %s" % (FILE, FILE))

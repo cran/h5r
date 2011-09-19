@@ -4,6 +4,16 @@
         *                                                *
         **************************************************
 
+                CHANGES IN h5r VERSION 1.4.4
+
+NEW FEATURES
+
+    o Added basic support for reading compound data sets. This support
+    works reasonably well for the examples that I have tried, one fear
+    is that memory is not being properly managed with compound data
+    access. Additionally, access to named vectors does not yet exist.
+
+
 
                 CHANGES IN h5r VERSION 1.4
 

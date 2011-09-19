@@ -5,14 +5,17 @@
 #include <Rinternals.h>    
 #include <R.h>
 
+#define myfree(p) (free(p))
+#define myalloc(s) (malloc(s))
+
 void h5R_allocate_finalizer(SEXP eptr) {
     char* vector = R_ExternalPtrAddr(eptr);
-    Free(vector);
+    myfree(vector);
     R_ClearExternalPtr(eptr);
 }
 
 SEXP h5R_allocate_meg() {
-    char* vector = (char*) Calloc(1048576, char);
+    char* vector = (char*) myalloc(1048576);
     for (int j = 0; j < 1048576; j++) {
     	vector[j] = 'c';
     }
@@ -24,7 +27,7 @@ SEXP h5R_allocate_meg() {
 }
 
 SEXP h5R_allocate_k() {
-    char* vector = (char*) Calloc(1024, char);
+    char* vector = (char*) myalloc(1024);
     for (int j = 0; j < 1024; j++) {
     	vector[j] = 'c';
     }
@@ -36,7 +39,7 @@ SEXP h5R_allocate_k() {
 }
 
 SEXP h5R_allocate_gig() {
-    char* vector = (char*) Calloc(1073741824, char);
+    char* vector = (char*) myalloc(1073741824);
     for (int j = 0; j < 1073741824; j++) {
     	vector[j] = 'c';
     }
